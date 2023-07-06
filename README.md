@@ -1,5 +1,5 @@
 # airflow_mvp
-Airflow best practices for a production server
+Airflow best practices for a Minimum Viable Product (MVP)
 
 Original data for this README is from codineric, completed by me.
 
