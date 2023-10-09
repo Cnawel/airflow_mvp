@@ -1,0 +1,35 @@
+sudo apt-get install python3-dev
+
+pip install "apache-airflow[postgres]==2.5.0" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.5.0/constraints-3.7.txt"
+
+apt-get install postgresql postgresql-contrib
+
+sudo -i -u postgres
+psql
+
+CREATE DATABASE airflow;
+CREATE USER airflow WITH PASSWORD 'airflow';
+GRANT ALL PRIVILEGES ON DATABASE airflow TO airflow;
+postgres=# \q
+CTRL+D
+
+venv# cd airflow
+sed -i 's#sqlite:////home/ubuntu/airflow/airflow.db#postgresql+psycopg2://airflow:airflow@localhost/airflow#g' airflow.cfg
+
+postgresql+psycopg2://airflow:airflow@localhost/airflow
+
+grep sql_alchemy airflow.cfg
+
+sed -i 's#SequentialExecutor#LocalExecutor#g' airflow.cfg
+
+airflow db init
+
+airflow users create -u airflow -f airflow -l airflow -r Admin -e airflow@gmail.com
+
+sudo ufw enable
+
+sudo ufw allow 8080/tcp
+
+airflow webserver &
+airflow scheduler
+
